@@ -1,0 +1,30 @@
+//1.Create a database studentdb
+//2.create a table student(id,name,age,marks,gender,grade)
+//
+//3.Insert 5 records using class Student
+//4.Display all records
+//5.delete student with marks less than 60
+//6.update student grade based on marks
+//7.get student name with marks >80 and age >22
+
+package com.student;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Student {
+public static void main(String[] args) throws ClassNotFoundException, SQLException {
+	Class.forName("com.mysql.cj.jdbc.Driver");
+	Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/student","root","root");
+	Statement statement = connection.createStatement();
+	statement.execute("insert into student values(01,'Asif Ali',23,45,'Male','D1')");
+	statement.execute("insert into student values(02,'Dulkar Salman',27,79,'Male','B1')");
+	statement.execute("insert into student values(03,'Salman Khan',43,97,'Male','A1')");
+	statement.execute("insert into student values(04,'Ameer Khan',65,73,'Male','B1')");
+	statement.execute("insert into student values(05,'Priyanka Chopra',33,55,'Male','C1')");
+	connection.close();
+	System.out.println("Data Saved!");
+}
+}
