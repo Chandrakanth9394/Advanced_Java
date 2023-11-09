@@ -1,0 +1,108 @@
+package com.customer;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import com.mysql.cj.xdevapi.Result;
+
+public class MenuDriver {
+public static void main(String[] args) {
+	Scanner sc = new Scanner(System.in);
+	Connection connection = null;
+	try {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/hotel", "root", "root");
+		boolean repeat= true;
+		do 
+		{
+			System.out.println("------------WELCOME TO TAJ HOTEL--------------");
+			System.out.println("1.AddMenu:\n 2.DeleteMenu:\n 3.UpdateMenu:\n 4.Display\n 5.Exit");
+			System.out.println("This is your menu");
+			int ch =sc.nextInt();
+			switch(ch)
+			{
+			case 1:
+			{
+				PreparedStatement preparedStatement = connection.prepareStatement("insert into hotel values(?,?,?,?,?)");
+				System.out.println("Enter the Id:");
+				preparedStatement.setInt(1,sc.nextInt());
+				System.out.println("Enter the name:");
+				preparedStatement.setString(2, sc.next());
+				System.out.println("Enter the type of your dish");
+				preparedStatement.setString(3, sc.next());
+				System.out.println("Enter your rating");
+				preparedStatement.setString(4,sc.next());
+				System.out.println("Enter the price");
+				preparedStatement.setDouble(5,sc.nextDouble());
+				preparedStatement.execute();
+				System.out.println("Menu added successfully");
+			}
+			break;
+			case 2:
+			{
+				System.out.println("Enter the id you want to delete");
+				PreparedStatement prepareddeletstatement = connection.prepareStatement("delete from hotel where id = ?");
+				prepareddeletstatement.setInt(1,sc.nextInt());
+				prepareddeletstatement.execute();
+				System.out.println("Menu updated!");
+			}
+			break;
+			case 3:
+			{
+				PreparedStatement preparedupdatestatement = connection.prepareStatement("update hotel set name = ? where id = ?");
+				System.out.println("Enter the Food name?");
+				preparedupdatestatement.setString(1,sc.next());
+				System.out.println("please provide the id also");
+				preparedupdatestatement.setInt(2,sc.nextInt());
+				System.out.println("your update is successfull");
+				preparedupdatestatement.execute();
+			}
+			break;
+			case 4:
+			{
+				String a = "select * from hotel"; 
+				PreparedStatement preparedisplaystatement = connection.prepareStatement(a);
+				ResultSet resultset = preparedisplaystatement.executeQuery();
+				System.out.println("-----------------------------");
+				System.out.println("HotelId Name type rating price");
+				while(resultset.next())
+				{
+					System.out.print(resultset.getInt(1)+" ");
+					System.out.print(resultset.getString(2)+" ");
+					System.out.print(resultset.getString(3)+" ");
+					System.out.print(resultset.getString(4)+" ");
+					System.out.println(resultset.getDouble(5));
+				}
+				while(resultset.next())
+				{
+					System.out.print(resultset.getInt(1)+" ");
+					System.out.print(resultset.getString(2)+" ");
+					System.out.print(resultset.getString(3)+" ");
+					System.out.print(resultset.getString(4)+" ");
+					System.out.println(resultset.getDouble(5));
+				}
+				System.out.println("-----------------------------");
+			}
+			break;
+			case 5:
+			{
+				repeat = false;
+				System.out.println("Thankyou ");
+			}
+			break;
+			default :
+				System.out.println("invalid choice");
+				break;
+			}
+		}while(repeat);
+		connection.close();
+	} catch (ClassNotFoundException | SQLException e) {
+		e.printStackTrace();
+	}
+	
+}
+}
