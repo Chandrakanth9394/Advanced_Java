@@ -1,1 +1,3 @@
-
+step1:created Employe class
+step2:created EmployeDataBase interface  
+step3:created Employe class EmployeDataBaseImplementation
